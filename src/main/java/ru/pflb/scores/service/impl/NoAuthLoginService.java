@@ -1,6 +1,5 @@
 package ru.pflb.scores.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.pflb.scores.service.LoginService;
 import ru.pflb.scores.util.SessionEvictingHolder;
@@ -8,12 +7,11 @@ import ru.pflb.scores.util.SessionEvictingHolder;
 @Component
 public class NoAuthLoginService implements LoginService {
 
-    private final SessionEvictingHolder sessionHolder;
-
-    @Autowired
     public NoAuthLoginService(SessionEvictingHolder sessionHolder) {
         this.sessionHolder = sessionHolder;
     }
+
+    private final SessionEvictingHolder sessionHolder;
 
     @Override
     public int getUserId(String sessionKey) {
