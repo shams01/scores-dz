@@ -1,5 +1,7 @@
 package ru.pflb.scores.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+@Component
 public class SessionEvictingHolder {
     public static final long DEFAULT_SESSION_TIMEOUT = 600000L;
     public static final long DEFAULT_EVICTION_SCHEDULE = 10000L;
