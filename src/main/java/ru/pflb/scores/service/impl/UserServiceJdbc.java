@@ -27,15 +27,16 @@ public class UserServiceJdbc implements UserService {
 
     @Override
     public User getUser(long id) {
-        String name = jdbcTemplate.queryForObject("select name from scores.user where id = ?",
+        return jdbcTemplate.queryForObject("select id, name from scores.user where id = ?",
                 new Long[]{id},
                 new int[]{Types.BIGINT},
-                String.class);
+                (rs, rowNum) -> {
+                    User user = new User();
+                    user.setId(rs.getLong("id"));
+                    user.setName(rs.getString("name"));
+                    return user;
+                });
 
-        User result = new User();
-        result.setId(id);
-        result.setName(name);
-        return result;
     }
 
     private long generateId() {
