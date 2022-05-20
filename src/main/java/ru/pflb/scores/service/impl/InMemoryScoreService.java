@@ -1,5 +1,6 @@
 package ru.pflb.scores.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.pflb.scores.dto.HighScores;
 import ru.pflb.scores.dto.LevelHighScores;
 import ru.pflb.scores.service.LoginService;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Service
 public class InMemoryScoreService implements ScoreService {
 
     private final LoginService loginService;
