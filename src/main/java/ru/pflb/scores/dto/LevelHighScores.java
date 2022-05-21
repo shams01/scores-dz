@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class LevelHighScores {
 
@@ -47,6 +48,6 @@ public class LevelHighScores {
     public HighScores getHighScores(int limit) {
         return new HighScores(
                 scores.descendingMap().entrySet().stream().flatMap(entry -> entry.getValue().stream())
-                        .limit(limit).toList());
+                        .limit(limit).collect(Collectors.toList()));
     }
 }
