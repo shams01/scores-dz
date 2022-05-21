@@ -3,6 +3,7 @@ package ru.pflb.scores.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 import ru.pflb.scores.entity.User;
 import ru.pflb.scores.service.UserService;
 
@@ -13,9 +14,16 @@ import java.sql.Types;
 public class UserServiceJdbc implements UserService {
 
     private final JdbcTemplate jdbcTemplate;
+    private final TransactionTemplate transactionTemplate;
 
     @Override
     public User registerUser(String name) {
+        return transactionTemplate.execute(status -> registerUserLocking(name));
+    }
+
+    private User registerUserLocking(String name) {
+        jdbcTemplate.execute("LOCK TABLE scores.user IN ROW EXCLUSIVE MODE");
+
         long id = generateId(); // ой, но что если кто-то теперь успеет обновить БД раньше нас
 
         jdbcTemplate.update(
@@ -27,15 +35,16 @@ public class UserServiceJdbc implements UserService {
 
     @Override
     public User getUser(long id) {
-        String name = jdbcTemplate.queryForObject("select name from scores.user where id = ?",
+        return jdbcTemplate.queryForObject("select id, name from scores.user where id = ?",
                 new Long[]{id},
                 new int[]{Types.BIGINT},
-                String.class);
+                (rs, rowNum) -> {
+                    User user = new User();
+                    user.setId(rs.getLong("id"));
+                    user.setName(rs.getString("name"));
+                    return user;
+                });
 
-        User result = new User();
-        result.setId(id);
-        result.setName(name);
-        return result;
     }
 
     private long generateId() {
