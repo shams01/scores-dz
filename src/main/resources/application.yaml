@@ -1,7 +1,6 @@
-server:
-  tomcat:
-    threads:
-      min-spare: 25
-      max: 100
-    accept-count: 50
-  port: 8080
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+    url: jdbc:h2:mem:testdb

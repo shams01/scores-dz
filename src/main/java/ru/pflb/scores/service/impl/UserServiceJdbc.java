@@ -15,14 +15,14 @@ public class UserServiceJdbc implements UserService {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public long registerUser(String name) {
+    public User registerUser(String name) {
         long id = generateId(); // ой, но что если кто-то теперь успеет обновить БД раньше нас
 
         jdbcTemplate.update(
                 "INSERT INTO scores.user (id, name) VALUES (?, ?)", id, name
         );
 
-        return id;
+        return new User(id, name);
     }
 
     @Override
